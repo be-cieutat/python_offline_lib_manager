@@ -22,7 +22,8 @@ The tool is designed to be run from the command line, and will prompt the user f
 ## Future use of wishlist
 - User copies the wishlist and sends it by email to an automated downloader.
 - The downloader will download the libraries, archive them and send them back to the user.
-- The user will then copy the archive to the drop point, and run the tool.
+- The user can then download the archive, analyze it to make sur it is safe, and then copy it to the drop point.
+- The user can now run the tool and install the libraries.
 
 
 ## To Do
