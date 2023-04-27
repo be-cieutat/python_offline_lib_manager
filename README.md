@@ -28,7 +28,7 @@ The tool is designed to be run from the command line, and will prompt the user f
 
 ## To Do
 - [ ] Add version checking
-- [ ] Add wishlist functionality
-- [ ] Add drop point functionality
+- [x] Add wishlist functionality
+- [x] Add drop point functionality
 - [ ] Add optionnal GUI
-- [ ] Add basic python installer/updater
+- [ ] Add basic python installer/update
