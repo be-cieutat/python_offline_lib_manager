@@ -1,9 +1,14 @@
+# Imports
+
 import subprocess
 import zipfile
 import os
 import sys
+import shutil
+
 
 # Global variables
+
 PATH_TO_SCRIPT = __file__
 PATH_TO_PROJECT = os.path.dirname(PATH_TO_SCRIPT)
 #PATH_TO_LIBS = os.path.join(PATH_TO_PROJECT, 'libs')
@@ -14,25 +19,46 @@ PATH_TO_WISHLIST = os.path.join(PATH_TO_PROJECT, 'wishlist.txt')
 LOCAL_OS = sys.platform
 LOCAL_PYTHON_VERSION = subprocess.check_output(['python', '--version']).decode('utf-8').split(' ')[1].split('\r')[0]
 
+
 # Functions to install libraries
 
 def install_libs(libs):
     for lib in libs:
-        subprocess.call(['pip', 'install', lib])
-
+        subprocess.check_call([sys.executable,'-m','pip','install',PATH_TO_LIBS])
+        # TO COMPLETE
+        
 
 # Functions to sort libraries from drop_point into libs
 
-def unzip_archive(archive):
-    with zipfile.ZipFile(archive, 'r') as zip_ref:
-        zip_ref.extractall(PATH_TO_DROP_POINT)
+def unzip_archives(path):
+    for file in os.listdir(path):
+        file_path = os.path.join(path, file)
+        if file.endswith('.zip'):
+            with zipfile.ZipFile(file_path, 'r') as zip_ref:
+                zip_ref.extractall(path)
+            os.remove(file_path)
     
 
+def move_libs(path):
+    for file in os.listdir(path):
+        file_path = os.path.join(path, file)
+        if file_path.endswith('.whl'):
+            shutil.move(file_path, PATH_TO_LIBS)
+        if os.path.isdir(file_path):
+            for subfile in os.listdir(file_path):
+                subfile_path = os.path.join(file_path, subfile)
+                shutil.move(subfile_path, PATH_TO_LIBS)
+            os.rmdir(file_path)
+        
+            
 def sort_libs():
-    for lib in os.listdir(PATH_TO_DROP_POINT):
-        if lib.endswith('.zip'):
-            unzip_archive(lib)
-            os.remove(os.path.join(PATH_TO_DROP_POINT, lib))
+    pass
+
+def manage_drop_point():
+    unzip_archives(PATH_TO_DROP_POINT)
+    move_libs(PATH_TO_DROP_POINT)
+        
+        
 # TO COMPLETE
 
 
@@ -50,17 +76,19 @@ def clear_whitelist():
     open(PATH_TO_WISHLIST, 'w').close()
     
 
-    
-
 # Functions to handle user input
+
 
 
 
 # Debug
 
 #print(LOCAL_OS)
-#add_to_wishlist('lib1')
-#clear_whitelist()
+#add_to_wishlist('lib1') #OK
+#clear_whitelist() #OK
+#unzip_archive(PATH_TO_DROP_POINT+'/tt.zip') #OK
+manage_drop_point() #OK
+#sort_libs() #OK
 
 
 
